@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 class Numbers {
     public static final IntPredicate NEGATIVE_NUMBER_PREDICATE = n -> n < 0;
+    public static final IntPredicate LESS_OR_EQUAL_1K = n -> n <= 1000;
     private final String[] numbers;
 
     Numbers(String[] numbers) {
@@ -22,7 +23,7 @@ class Numbers {
     }
 
     Integer sum() {
-        return intStream().sum();
+        return intStream().filter(LESS_OR_EQUAL_1K).sum();
     }
 
     private IntStream intStream() {

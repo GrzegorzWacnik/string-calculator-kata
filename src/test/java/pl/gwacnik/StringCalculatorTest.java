@@ -68,4 +68,18 @@ public class StringCalculatorTest
         calculateException.isInstanceOf(NegativeNumbersNotSupported.class);
         calculateException.hasMessage("-3,-4");
     }
+
+    @Test
+    public void testNumbersGreaterThan1kShouldBeSkipped() {
+        final Integer sum = calculator.add("1001,2");
+
+        assertThat(sum).isEqualTo(2);
+    }
+
+    @Test
+    public void testSumNumbersLessOrEqual1k() {
+        final Integer sum = calculator.add("1000,1");
+
+        assertThat(sum).isEqualTo(1001);
+    }
 }
