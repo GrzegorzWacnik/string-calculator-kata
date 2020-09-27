@@ -1,18 +1,22 @@
 package pl.gwacnik;
 
-import java.util.stream.Collectors;
-
 public class StringCalculator
 {
     public Integer add(String input) {
         if(input.isEmpty())
             return 0;
 
-        if(InputParser.fromString(input).parseToStream().anyMatch(n -> n < 0)) {
-            final String negativeNumbers = InputParser.fromString(input).parseToStream().filter(n -> n < 0).mapToObj(String::valueOf).collect(Collectors.joining(","));
-            throw new NegativeNumbersNotSupported(negativeNumbers);
+        final Numbers numbers = InputParser.fromString(input).parseNumbers();
+
+        if(numbers.haveNegatives()) {
+            negativeNumbersAreNotSupported(numbers);
         }
 
-        return InputParser.fromString(input).parseToStream().sum();
+        return numbers.sum();
+    }
+
+    private void negativeNumbersAreNotSupported(Numbers numbers) {
+        final String negativeNumbers = numbers.getNegativesAsString();
+        throw new NegativeNumbersNotSupported(negativeNumbers);
     }
 }

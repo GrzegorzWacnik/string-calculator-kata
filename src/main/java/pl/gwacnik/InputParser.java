@@ -17,8 +17,8 @@ class InputParser {
         return new InputParser(input, Delimiter.fromString(input));
     }
 
-    IntStream parseToStream(){
-        return numbersFrom(input);
+    Numbers parseNumbers(){
+        return new Numbers(splitByDelimiter(input));
     }
 
     private IntStream numbersFrom(String input) {
