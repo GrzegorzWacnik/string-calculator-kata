@@ -1,27 +1,29 @@
 package pl.gwacnik;
 
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class DelimiterExtractor {
 
     public static final String DELIMITER_WRAPPER = "//|[\\[\\]]|\\n";
 
     static String extractFrom(String input) {
-        return findDelimiter(input)
+        return findDelimiters(input)
                 .map(DelimiterExtractor::removeDefinitionWrapper)
                 .map(escapeForRegex())
-                .orElse(Delimiter.Patterns.DEFAULT_DELIMITER.getValue());
+                .collect(Collectors.joining("|"));
     }
 
-    private static Optional<String> findDelimiter(String input) {
+    private static Stream<String> findDelimiters(String input) {
         return Pattern.compile(Delimiter.Patterns.DELIMITER_DEFINITION.getValue())
                 .matcher(input)
                 .results()
                 .map(MatchResult::group)
-                .findFirst();
+                .flatMap(delimiters -> Arrays.stream(delimiters.split("]\\[")));
     }
 
     private static String removeDefinitionWrapper(String d) {

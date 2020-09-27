@@ -96,4 +96,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(10);
     }
+
+    @Test
+    public void testMultipleDelimitersSupport() {
+        final Integer sum = calculator.add("//[*][%]\n1*2%3");
+
+        assertThat(sum).isEqualTo(6);
+    }
 }
