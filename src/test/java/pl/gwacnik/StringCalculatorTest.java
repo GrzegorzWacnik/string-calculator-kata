@@ -89,4 +89,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(6);
     }
+
+    @Test
+    public void testMultiCharDelimiterAndDefaultDelimitersSupport() {
+        final Integer sum = calculator.add("//[***]\n1***2,3\n4");
+
+        assertThat(sum).isEqualTo(10);
+    }
 }

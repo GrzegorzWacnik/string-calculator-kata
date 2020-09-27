@@ -1,8 +1,5 @@
 package pl.gwacnik;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
 class InputParser {
 
     private final String input;
@@ -19,10 +16,6 @@ class InputParser {
 
     Numbers parseNumbers(){
         return new Numbers(splitByDelimiter(input));
-    }
-
-    private IntStream numbersFrom(String input) {
-        return Arrays.stream(splitByDelimiter(input)).mapToInt(Integer::valueOf);
     }
 
     private String[] splitByDelimiter(String input) {

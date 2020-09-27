@@ -1,41 +1,26 @@
 package pl.gwacnik;
 
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
-
 class Delimiter {
-
-    public static final String DEFAULT_DELIMITER = ",|\\n";
-    public static final String DELIMITER_DEFINITION = "//.*?\\n";
-
     private final String value;
 
     private Delimiter(String value) {
-        this.value = value + "|" + DEFAULT_DELIMITER;
+        this.value = value + "|" + Patterns.DEFAULT_DELIMITER.getValue();
     }
 
     private Delimiter() {
-        this.value = DEFAULT_DELIMITER;
+        this.value = Patterns.DEFAULT_DELIMITER.getValue();
     }
 
     static Delimiter fromString(String input) {
-        if (input.startsWith("//[")) {
-            final String delimiter = Pattern.compile(DELIMITER_DEFINITION)
-                    .matcher(input)
-                    .results()
-                    .map(MatchResult::group)
-                    .findFirst()
-                    .map(d -> d.replaceAll("//|[\\[\\]]|\\n", ""))
-                    .map(Pattern::quote)
-                    .orElse(DEFAULT_DELIMITER);
+        if (hasCustomDelimiter(input)) {
+            final String delimiter = DelimiterExtractor.extractFrom(input);
             return new Delimiter(delimiter);
-
-        } else if (input.startsWith("//")) {
-            String customDelimiter = String.valueOf(input.charAt(2));
-            return new Delimiter(customDelimiter);
         }
-
         return new Delimiter();
+    }
+
+    private static boolean hasCustomDelimiter(String input) {
+        return input.startsWith("//");
     }
 
     public String asRegex() {
@@ -43,6 +28,21 @@ class Delimiter {
     }
 
     public String delimiterDef() {
-        return DELIMITER_DEFINITION;
+        return Patterns.DELIMITER_DEFINITION.getValue();
+    }
+
+    enum Patterns {
+        DEFAULT_DELIMITER(",|\\n"),
+        DELIMITER_DEFINITION("//.*?\\n");
+
+        private final String value;
+
+        Patterns(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }
