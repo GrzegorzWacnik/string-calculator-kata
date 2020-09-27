@@ -1,8 +1,10 @@
 package pl.gwacnik;
 
+import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StringCalculatorTest
 {
@@ -55,5 +57,15 @@ public class StringCalculatorTest
         final Integer sum = calculator.add("//;\n1;2\n3");
 
         assertThat(sum).isEqualTo(6);
+    }
+
+    @Test
+    public void testNoNegativeNumbersAreSupported() {
+        //Marek - that's the only case I think use of 'var' makes sense
+        //as type here is quite ugly: AbstractThrowableAssert<? extends AbstractThrowableAssert<?,?>, ?>
+        var calculateException = assertThatThrownBy(() -> calculator.add("1,2,-3,-4"));
+
+        calculateException.isInstanceOf(NegativeNumbersNotSupported.class);
+        calculateException.hasMessage("-3,-4");
     }
 }
