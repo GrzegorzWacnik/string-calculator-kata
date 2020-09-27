@@ -2,12 +2,16 @@ package pl.gwacnik;
 
 class Delimiter {
 
-    public static final String DEFAULT_DELIMITER = "[,\\n]";
+    public static final String DEFAULT_DELIMITER = ",\\n";
 
     private final String value;
 
-    public Delimiter(String value) {
-        this.value = value;
+    private Delimiter(String value) {
+        this.value = value + DEFAULT_DELIMITER;
+    }
+
+    private Delimiter() {
+        this.value = DEFAULT_DELIMITER;
     }
 
     static Delimiter fromString(String input) {
@@ -16,11 +20,11 @@ class Delimiter {
             return new Delimiter(customDelimiter);
         }
 
-        return new Delimiter(DEFAULT_DELIMITER);
+        return new Delimiter();
     }
 
     public String asRegex() {
-        return value;
+        return "[" + value + "]";
     }
 
     public String delimiterDef() {

@@ -49,4 +49,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(3);
     }
+
+    @Test
+    public void testCustomDelimiterAndNewLineAsSeparator() {
+        final Integer sum = calculator.add("//;\n1;2\n3");
+
+        assertThat(sum).isEqualTo(6);
+    }
 }
