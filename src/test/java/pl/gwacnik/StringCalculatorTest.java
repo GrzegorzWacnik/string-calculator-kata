@@ -21,4 +21,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(1);
     }
+
+    @Test
+    public void testReturnSumOfTwoNumbersInput() {
+        final Integer sum = calculator.add("1,2");
+
+        assertThat(sum).isEqualTo(3);
+    }
 }
