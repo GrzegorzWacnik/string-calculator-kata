@@ -28,4 +28,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(3);
     }
+
+    @Test
+    public void testReturnSumOfMultipleNumbers() {
+        final Integer sum = calculator.add("1,2,3,4,5");
+
+        assertThat(sum).isEqualTo(15);
+    }
 }
