@@ -42,4 +42,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(6);
     }
+
+    @Test
+    public void testCustomDelimiterSupport() {
+        final Integer sum = calculator.add("//;\n1;2");
+
+        assertThat(sum).isEqualTo(3);
+    }
 }
