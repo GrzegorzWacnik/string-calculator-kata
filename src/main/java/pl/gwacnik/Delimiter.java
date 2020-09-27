@@ -1,10 +1,14 @@
 package pl.gwacnik;
 
+import java.util.List;
+
 class Delimiter {
+    private static final String REGEX_OR_OPERATOR = "|";
     private final String value;
 
-    private Delimiter(String value) {
-        this.value = value + "|" + Patterns.DEFAULT_DELIMITER.getValue();
+    private Delimiter(List<String> delimiters) {
+        delimiters.add(Patterns.DEFAULT_DELIMITER.value);
+        this.value = String.join(REGEX_OR_OPERATOR, delimiters);
     }
 
     private Delimiter() {
@@ -13,14 +17,13 @@ class Delimiter {
 
     static Delimiter fromString(String input) {
         if (hasCustomDelimiter(input)) {
-            final String delimiter = DelimiterExtractor.extractFrom(input);
-            return new Delimiter(delimiter);
+            return new Delimiter(DelimiterExtractor.extractFrom(input));
         }
         return new Delimiter();
     }
 
     private static boolean hasCustomDelimiter(String input) {
-        return input.startsWith("//");
+        return input.startsWith(Patterns.CUSTOM_DELIMITER_LINE_START.getValue());
     }
 
     public String asRegex() {
@@ -33,7 +36,8 @@ class Delimiter {
 
     enum Patterns {
         DEFAULT_DELIMITER(",|\\n"),
-        DELIMITER_DEFINITION("//.*?\\n");
+        DELIMITER_DEFINITION("//.*?\\n"),
+        CUSTOM_DELIMITER_LINE_START("//");
 
         private final String value;
 
@@ -41,7 +45,7 @@ class Delimiter {
             this.value = value;
         }
 
-        public String getValue() {
+        String getValue() {
             return value;
         }
     }

@@ -1,6 +1,7 @@
 package pl.gwacnik;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
@@ -10,12 +11,13 @@ import java.util.stream.Stream;
 class DelimiterExtractor {
 
     public static final String DELIMITER_WRAPPER = "//|[\\[\\]]|\\n";
+    public static final String DELIMITERS_SEPARATOR = "]\\[";
 
-    static String extractFrom(String input) {
+    static List<String> extractFrom(String input) {
         return findDelimiters(input)
                 .map(DelimiterExtractor::removeDefinitionWrapper)
                 .map(escapeForRegex())
-                .collect(Collectors.joining("|"));
+                .collect(Collectors.toList());
     }
 
     private static Stream<String> findDelimiters(String input) {
@@ -23,7 +25,7 @@ class DelimiterExtractor {
                 .matcher(input)
                 .results()
                 .map(MatchResult::group)
-                .flatMap(delimiters -> Arrays.stream(delimiters.split("]\\[")));
+                .flatMap(separateDelimiters());
     }
 
     private static String removeDefinitionWrapper(String d) {
@@ -32,5 +34,9 @@ class DelimiterExtractor {
 
     private static Function<String, String> escapeForRegex() {
         return Pattern::quote;
+    }
+
+    private static Function<String, Stream<? extends String>> separateDelimiters() {
+        return delimiters -> Arrays.stream(delimiters.split(DELIMITERS_SEPARATOR));
     }
 }
