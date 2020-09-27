@@ -35,4 +35,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(15);
     }
+
+    @Test
+    public void testNewLineAsSeparator() {
+        final Integer sum = calculator.add("1\n2,3");
+
+        assertThat(sum).isEqualTo(6);
+    }
 }

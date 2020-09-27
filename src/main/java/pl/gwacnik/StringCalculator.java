@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 public class StringCalculator
 {
-    public static final String DELIMITER = ",";
+    public static final String DELIMITER = "[,\\n]";
 
     public Integer add(String input) {
         if(input.isEmpty())
