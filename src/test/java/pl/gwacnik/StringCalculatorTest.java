@@ -82,4 +82,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(1001);
     }
+
+    @Test
+    public void testSupportMultipleCharactersDelimiter() {
+        final Integer sum = calculator.add("//[***]\n1***2***3");
+
+        assertThat(sum).isEqualTo(6);
+    }
 }
