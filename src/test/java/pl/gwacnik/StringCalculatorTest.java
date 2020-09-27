@@ -14,4 +14,11 @@ public class StringCalculatorTest
 
         assertThat(sum).isEqualTo(0);
     }
+
+    @Test
+    public void testReturnNumberIfOneNumberInput() {
+        final Integer sum = calculator.add("1");
+
+        assertThat(sum).isEqualTo(1);
+    }
 }
